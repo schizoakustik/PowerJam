@@ -1,0 +1,10 @@
+
+** ROLLER DERBY-SPELET **
+
+En sidescrollande endless runner med en jammer som ska passera vågor av blockers.
+Hoppa kostar mycket stamina, annars vara snabb eller försöka tima hittar.
+Stamina bar - stamina används för att passera blockers och laddas upp igen mellan
+vågorna. Mellan vågorna kan det också komma power ups.
+Ens pivot kan dyka upp, då kan man försöka sig på en star pass.
+
+SPELMEKANIK
