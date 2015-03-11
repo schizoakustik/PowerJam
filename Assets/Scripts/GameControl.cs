@@ -2,7 +2,8 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class GameControl : MonoBehaviour {
+public class GameControl : MonoBehaviour
+{
 
 	//PlayerControl PlayerControl;
 	public float[] lanes;
@@ -41,33 +42,37 @@ public class GameControl : MonoBehaviour {
 	float powerUpLastTime = 0;
 	float powerUpSpawnTime = 5f;
 
-	void Start(){
+	void Start ()
+	{
 //		SpecialMoveAnim = SpecialMovePanel.GetComponent<Animator>();
 		endJam = false;
 		jamTimer = 120f;
 
 	}
 
-	void ActivateBlockers(){
+	void ActivateBlockers ()
+	{
 		// Activate a random set of blockers from pool.
-		int rand = Random.Range(0, 4);
-	//	int rand = 0;
-		ActiveBlockers = blockers[rand];
-		ActiveBlockers.transform.position = new Vector3(Jammer.transform.position.x + distanceToBlockers, 0f, 0f);
-		ActiveBlockers.SetActive(true);
+		int rand = Random.Range (0, blockers.Length);
+		//	int rand = 0;
+		ActiveBlockers = blockers [rand];
+		ActiveBlockers.transform.position = new Vector3 (Jammer.transform.position.x + distanceToBlockers, 0f, 0f);
+		ActiveBlockers.SetActive (true);
 		scoreUpdated = false;
 		areThereBlockers = ActiveBlockers.activeSelf;
 
 
 	}
 
-	void ActivePowerUp(){
-		int rand = Random.Range(0, 9);
-		if (rand >= 5){
-			int randomLane = Random.Range(1, 4);
-			PowerUp.transform.position = new Vector2((Jammer.transform.position.x + Random.Range(5, 9)), lanes[randomLane]);
-			PowerUp.gameObject.SetActive(true);}
+	void ActivePowerUp ()
+	{
+		int rand = Random.Range (0, 9);
+		if (rand >= 5) {
+			int randomLane = Random.Range (1, 4);
+			PowerUp.transform.position = new Vector2 ((Jammer.transform.position.x + Random.Range (5, 9)), lanes [randomLane]);
+			PowerUp.gameObject.SetActive (true);
 		}
+	}
 
 //	public void ActivateSpecialMove(){
 //		// A button with a closing ring appears. Get the timing right and the jammer will perform a special move, otherwise it's a penalty.
@@ -86,19 +91,20 @@ public class GameControl : MonoBehaviour {
 //	}
 
 
-	void Update(){
-		timeVariable += 1*Time.deltaTime;
+	void Update ()
+	{
+		timeVariable += 1 * Time.deltaTime;
 		jammerPos = Jammer.transform.position.x;
 
 //		if ((timeVariable - blockerLastTime) > blockerSpawnTime && !endJam){
-		if (jammerPos > distanceToNextPack){
-			ActivateBlockers();
+		if (jammerPos > distanceToNextPack) {
+			ActivateBlockers ();
 			distanceToNextPack = distanceToNextPack + 15;
 //			blockerLastTime = timeVariable;
 		}
 
-		if ((timeVariable - powerUpLastTime) > powerUpSpawnTime && !endJam){
-			ActivePowerUp();
+		if ((timeVariable - powerUpLastTime) > powerUpSpawnTime && !endJam) {
+			ActivePowerUp ();
 			powerUpLastTime = timeVariable;
 		}
 
@@ -109,31 +115,33 @@ public class GameControl : MonoBehaviour {
 //			}
 //		}
 
-		if (!endJam){
-			minutes = Mathf.FloorToInt((jamTimer - timeVariable) / 60F);
-			seconds = Mathf.FloorToInt((jamTimer - timeVariable) - minutes * 60);
+		if (!endJam) {
+			minutes = Mathf.FloorToInt ((jamTimer - timeVariable) / 60F);
+			seconds = Mathf.FloorToInt ((jamTimer - timeVariable) - minutes * 60);
 
-			string formattedTimer = string.Format("{0:0}:{1:00}", minutes, seconds);
+			string formattedTimer = string.Format ("{0:0}:{1:00}", minutes, seconds);
 
 			JamTimerText.text = formattedTimer;
 		}
 
 		if ((jamTimer - timeVariable) < 0 && !endJam)
-			EndJam("End of jam!");
+			EndJam ("End of jam!");
 
 	}
 
-	public void EndJam(string msg){
-
-		endJam = true;
-		JamTimerText.text = msg;
-		RestartButton.gameObject.SetActive(true);
-
+	public void EndJam (string msg)
+	{
+		if (!endJam) {
+			endJam = true;
+			JamTimerText.text = msg;
+			RestartButton.gameObject.SetActive (true);
+		}
 	}
 
-	public void Restart(){
+	public void Restart ()
+	{
 
-		Application.LoadLevel(0);
+		Application.LoadLevel (0);
 	}
 
 }
