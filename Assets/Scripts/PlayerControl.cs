@@ -4,8 +4,11 @@ using System.Collections;
 
 public class PlayerControl : MonoBehaviour {
 
+
+	Animator anim;
 	public GameControl gameControl;
-	public SpecialMoveControl specialMoveControl;
+//	public SpecialMoveControl specialMoveControl;
+	public SpecialMoveTest specialMoveTest;
 	public GameObject Blockers;
 	public Text ScoreText;
 	public Text HiScoreText;
@@ -40,7 +43,10 @@ public class PlayerControl : MonoBehaviour {
 		gameObject.layer = currentLane + 7;
 		currentLayer = 1 << gameObject.layer;
 
-		}
+		anim = GetComponent<Animator>();
+
+	}
+
 
 	// Update is called once per frame
 	void Update () {
@@ -89,11 +95,18 @@ public class PlayerControl : MonoBehaviour {
 
 		CheckForBlockers();
 
+		if(Input.GetKeyUp("right")){
+			anim.SetBool("skate", false);
+		}
+
+
 	}
 
 	void Movement(float hInput){
-		if (stamina > 0 && !gameControl.endJam)
+		if (stamina > 0 && !gameControl.endJam){
 			GetComponent<Rigidbody2D>().AddForce(new Vector2((this.hInput * moveForce), 0));
+			anim.SetBool("skate", true);
+		}
 		//Debug.Log("Movement is running. hInput is " + hInput);
 		//rigidbody.velocity = new Vector3((move * moveSpeed), 0, 0);
 	}
@@ -174,7 +187,8 @@ public class PlayerControl : MonoBehaviour {
 
 			if(hit.collider.tag == "blocker"){
 
-				specialMoveControl.specialMoveIsActive = true;
+//				specialMoveControl.specialMoveIsActive = true;
+//				specialMoveTest.activateSpecialMove = true;
 			
 			}
 
@@ -189,10 +203,11 @@ public class PlayerControl : MonoBehaviour {
 				
 	}
 
-//	void OnCollisionEnter2D(Collision2D other){
-//		if(other.gameObject.tag == "blocker" && rigidbody2D.velocity.x > 0){
-//			gameControl.EndJam("Back block!");
-//		}
-//	}
+	void OnCollisionEnter2D(Collision2D other){
+		if(other.gameObject.tag == "blocker" && GetComponent<Rigidbody2D>().velocity.x > 0){
+			gameControl.EndJam("Back block!");
+
+		}
+	}
 
 }
